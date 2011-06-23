@@ -1,0 +1,89 @@
+id: 'TemplateSelector'
+key: 'TemplateSelector'
+name: 'Template Selector'
+description: 'Select a template within an Entry or Page.'
+version: 0.95
+author_name: 'Rick Bychowski'
+author_link: http://hiranyaloka.com/
+schema_version: 0.95
+plugin_link: http://hiranyaloka.com/melody/plugins/template_selector/
+
+callbacks:
+  MT::App::CMS::template_param.edit_entry: $TemplateSelector::TemplateSelector::Plugin::edit_entry_param
+  MT::Entry::post_save: $TemplateSelector::TemplateSelector::Plugin::cms_post_save_entry
+  MT::Page::post_save: $TemplateSelector::TemplateSelector::Plugin::cms_post_save_page
+  options_change.option.ts_trim: $TemplateSelector::TemplateSelector::Plugin::ts_options
+  options_change.option.ts_type: $TemplateSelector::TemplateSelector::Plugin::ts_options
+  options_change.option.ts_outfile: $TemplateSelector::TemplateSelector::Plugin::ts_options
+  options_change.option.ts_name: $TemplateSelector::TemplateSelector::Plugin::ts_options
+ 
+object_types:
+  entry:
+    template_selector: string meta
+  blog:
+    ts_menu_string: string meta
+
+tags:
+  function:
+    TemplateSelector: $TemplateSelector::TemplateSelector::Plugin::_hdlr_template_selector
+
+config_types:
+  template_selector_menu:
+     handler: $TemplateSelector::TemplateSelector::Plugin::_hdlr_ts_menu   
+
+options:
+  fieldsets:
+    template_selector_options:
+      label: 'Template Selector menu builder'
+      hint: 'Assign terms to create a selectable list of templates.'
+      order: 1      
+    template_selector_default:
+      label: 'Template Selector default value'
+      hint: 'Set the default template.'
+      order: 2      
+  ts_trim:
+    type: checkbox
+    label: 'Trim leading/trailing whitespace?'
+    hint: 'Uncheck to preserve leading/trailing whitespace in your outfile and name option terms.'
+    default: 1
+    fieldset: template_selector_options
+    scope: blog
+    order: 1
+  ts_type:
+    type: select
+    label: 'Template Types'
+    hint: 'Limit list to a single template type.'
+    delimiter: ','
+    values: ',index,archive,category,individual,custom,popup_image,comments,comment_preview,comment_error'
+    default: ''
+    fieldset: template_selector_options
+    scope: blog
+    order: 2
+  ts_outfile:
+    type: text
+    label: 'Index Template Outfile Name/Path'
+    hint: 'An outfile name or path (requires the index type checked above & supports % wildcard e.g '%.css').'
+    fieldset: template_selector_options
+    scope: blog
+    order: 3
+  ts_name:
+    type: text
+    label: 'Template Names'
+    hint: 'A template names (supports % wildcard).'
+    fieldset: template_selector_options
+    scope: blog
+    order: 4
+  template_selector_default:
+    type: template_selector_menu
+    label: 'Set Default Template'
+    hint: 'Select the default template name which the TemplateSelector tag will output blog-wide.'
+    default: 'navtop 3col'
+    fieldset: template_selector_default
+    scope: blog
+    order: 1
+
+
+    
+  
+    
+    
