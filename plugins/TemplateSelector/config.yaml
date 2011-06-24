@@ -62,14 +62,14 @@ options:
   ts_outfile:
     type: text
     label: 'Index Template Outfile Name/Path'
-    hint: 'An outfile name or path (requires the index type checked above & supports % wildcard e.g '%.css').'
+    hint: 'An outfile path (requires the index type checked above & supports % wildcard e.g '%.css' or 'archives/%').'
     fieldset: template_selector_options
     scope: blog
     order: 3
   ts_name:
     type: text
     label: 'Template Names'
-    hint: 'A template names (supports % wildcard).'
+    hint: 'A template name (supports % wildcard).'
     fieldset: template_selector_options
     scope: blog
     order: 4
