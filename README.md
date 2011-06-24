@@ -13,13 +13,13 @@ Then later in that template set a custom stylesheet:
 
     <link id="my_custom_layout" rel="stylesheet" href="<mt:Link template="$my_template_name">" type="text/css" media="screen" />
 
-# SETTING THE VALUE
+## Setting The Tag Value
 
 Simply select a template name from a pull-down menu within the "edit entry/page" form.
 
 # TEMPLATE SELECTOR MENU BUILDER
 
-TemplateSelector can automatically search and present your entire list of templates. You probably don't want to present your entire list of templates in the selection menu, so the Preferences::Plugin Settings::TemplateSelector form presents three options to narrow down the list. The resulting list is the result of an intersection of the three options (e.g. list = Type AND Outfile AND Name).
+TemplateSelector can automatically search and present your entire list of templates. You probably don't want to present your entire list of templates in the selection menu, so the Preferences::Plugin Settings::TemplateSelector form presents three options to narrow down the list. The resulting list is the result of an intersection of the three options (e.g. List = Type AND Outfile AND Name).
 
 The resulting template list is then used to build the Template Selector Default Form (on plugin options page) and the Template Selector form on each "edit entry/page" form.
 
@@ -42,7 +42,7 @@ Select from a single template type, or choose blank to return all types (blank i
 When the Index type is active, this text field matches against the Index Template Outfile path/name (precisely as shown in the "Design::Themes" panel of your blog's dashboard). Allows only certain characters (see below). Supports any combination of percent '%' and '_' wildcards. For example:
 
 * '%.css' matches index style sheets.
-* 'archives/%' matches any index files written to your blog root archives directory.
+* 'archives/%' matches any index templates with outfiles written to your blog root archives directory.
 
 ## Template Name (optional)
 A simple text field matching the template name(s). Practically useful only when used with the wildcard characters (otherwise you can only possibly match a single template).
@@ -64,7 +64,7 @@ When checked, leading/trailing whitespace will be trimmed from the Outfile and N
 The default selection is blank. Leaving all three fields blank will (theoretically) return all templates on your system. However, the template list size limit is twenty (see BUGS section below).
 
 # TEMPLATE SELECTOR DEFAULT VALUE
-After saving the three menu builder options, the "Set Default Template" menu will update the list of templates available in the "Set Default Template" field in the plugin options page. So it doesn't make sense to attempt to change the "Menu Builder" and "Default Template" values at the same time (although in fact they are saved in the same form, see Known Bugs section).
+After saving the three menu builder options, the "Set Default Template" menu will update the list of templates available in the "Set Default Template" field in the plugin options page. So it doesn't make sense to attempt to change the "Menu Builder" and "Default Template" values at the same time (although in fact they are saved in the same form, see TO DO section).
 
 # ENTRY/PAGE TEMPLATE SELECTOR
 Template Selector surfaces a dropdown list populated with the templates derived from the plugin options. New entries/pages will be provided the default selection option from the plugin options page.
@@ -80,7 +80,11 @@ Melody or Movable Type 4 with __ConfigAssistant 2.1.33 or above__. (ConfigAssist
 # KNOWN BUGS
 My testing has revealed that only the first 20 templates are exposed in the selection form, regardless of how many template names are fed to the Template Selector default value form. I'm open to suggestions to fix that.
 
-Changes to the menu builder and default template options are submitted at the same time (with a single "Save Changes" button. Because the former affects the latter, it makes more sense to submit them separately.
+
+# TO DO
+* Changes to the menu builder and default template options are submitted at the same time (with a single "Save Changes" button). Because the former affects the latter, it makes more sense to submit them separately (i.e. separate "Submit" buttons.
+
+* Show error message when 
 
 # THANKS
 Thanks to Byrne Reese for guidance, support, and code examples in his PageLayout plugin for Melody.
