@@ -13,16 +13,16 @@ sub edit_entry_param {
     my $type = $param->{object_type};
     my $class = $app->model($type);
     $entry = $class->load($param->{id});
-    $template_selector = $entry->template_selector();
+    $template_selector = $entry->template_selector() || '';
   }
-  #retrieve stored default value
+  #fall back to default if empty 
   my $blog_id = $blog->id;
   my $plugin = MT->component("TemplateSelector");
-  my $template_selector_default = $plugin->get_config_value( 'template_selector_default',
+  $template_selector = $template_selector || $plugin->get_config_value( 'template_selector_default',
     'blog:' . $app->blog->id );
   $app->log({
-    message => "Default value is '"
-      . $template_selector_default . "'."
+    message => "New TS value is '"
+      . $template_selector . "'."
   });
   # retrieve stored template selector menu
   my $ts_menu_string;
@@ -32,8 +32,8 @@ sub edit_entry_param {
   # generate template selector menu
   my $opts;
   foreach (@ts_options) {
-    my $selected = ($template_selector_default eq $_);
-    $opts .= '<option value="'.$_.'"'.($selected ? ' selected' : $template_selector_default)
+    my $selected = ($template_selector eq $_);
+    $opts .= '<option value="'.$_.'"'.($selected ? ' selected' : $template_selector)
       .'>'.$_."</option>\n";
   }
   my $setting = $tmpl->createElement('app:setting', { 

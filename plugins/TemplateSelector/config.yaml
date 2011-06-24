@@ -2,7 +2,7 @@ id: 'TemplateSelector'
 key: 'TemplateSelector'
 name: 'Template Selector'
 description: 'Select a template within an Entry or Page.'
-version: 0.95
+version: 0.96
 author_name: 'Rick Bychowski'
 author_link: http://hiranyaloka.com/
 schema_version: 0.95
