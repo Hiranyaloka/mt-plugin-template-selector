@@ -6,7 +6,7 @@ version: 0.95
 author_name: 'Rick Bychowski'
 author_link: http://hiranyaloka.com/
 schema_version: 0.95
-plugin_link: http://hiranyaloka.com/software/template_selector.html
+plugin_link: http://hiranyaloka.com/website_design_encinitas/software/templateselector-plugin-for-melody-and-mt4.html
 
 callbacks:
   MT::App::CMS::template_param.edit_entry: $TemplateSelector::TemplateSelector::Plugin::edit_entry_param
