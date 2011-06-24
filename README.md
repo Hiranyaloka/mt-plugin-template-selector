@@ -77,12 +77,16 @@ http://tinyurl.com/easy-plugin-install
 # DEPENDENCIES
 Melody or Movable Type 4 with __ConfigAssistant 2.1.33 or above__. (ConfigAssistant 2.1.33 [added the options basename to the option_hash for callbacks](https://github.com/openmelody/mt-plugin-configassistant/commit/2e80e4edf7de4fbe6a05df2c11b0f55729d9e974)).
 
-# KNOWN BUGS
+# Support, Feedback, Bugs, Feature Requests, ToDo
+
+I would like to hear about your experience with TemplateSelector. Leave a comment on the [Hiranyaloka TemplateSelector  support page](http://hiranyaloka.com/website_design_encinitas/software/templateselector-plugin-for-melody-and-mt4.html) or email me at [rick@hiranyaloka.com](mailto:rick@hiranyaloka.com).
+
+## Known Bugs
 * My testing has revealed that only the first 20 templates are exposed in the selection form, regardless of how many template names are fed to the Template Selector default value form. I'm open to suggestions to fix that.
 
 * Initial setting of the template “Type” field to “Index” at the same time as setting the Template “Outfile” option (in plugin settings) returns no templates to the list. The fix is to set the Template “Type” option by itself and subsequently add the Template “Outfile” option.
 
-# TO DO
+## To Do
 * Changes to the menu builder and default template options are submitted at the same time (with a single "Save Changes" button). Because the former affects the latter, it makes more sense to submit them separately (i.e. separate "Submit" buttons).
 
 * Show error message when unsupported characters are entered in the Template Outfile or Template Name text field options.
