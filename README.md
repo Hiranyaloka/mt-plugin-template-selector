@@ -91,9 +91,9 @@ I would like to hear about your experience with TemplateSelector. Leave a commen
 
 * Show error message when unsupported characters are entered in the Template Outfile or Template Name text field options.
 
-* Allow for multiple values: &lt;TemplateSelector name="foo"&gt; .
+* Allow for multiple values: &lt;mt:TemplateSelector name="foo"&gt; .
 
-* Extend other Melody objects: &ltTemplateSelector object='Category' name="bar"&gt; .
+* Extend other Melody objects: &lt;mt:TemplateSelector object="Category" name="bar"&gt; .
 
 # THANKS
 Thanks to Byrne Reese for guidance, support, and code examples in his PageLayout plugin for Melody.
