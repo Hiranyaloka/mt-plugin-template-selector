@@ -1,6 +1,6 @@
 use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME            => "TemplateSelector",
-    VERSION         => '0.1',
+    VERSION         => '0.95',
     DISTNAME        => 'TemplateSelector',
 );
