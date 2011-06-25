@@ -87,13 +87,17 @@ I would like to hear about your experience with TemplateSelector. Leave a commen
 * Initial setting of the template “Type” field to “Index” at the same time as setting the Template “Outfile” option (in plugin settings) returns no templates to the list. The fix is to set the Template “Type” option by itself and subsequently add the Template “Outfile” option.
 
 ## Road Map
-* Changes to the menu builder and default template options are submitted at the same time (with a single "Save Changes" button). Because the former affects the latter, it makes more sense to submit them separately (i.e. separate "Submit" buttons).
+* v1.0 - Changes to the menu builder and default template options are submitted at the same time (with a single "Save Changes" button). Because the former affects the latter, it makes more sense to submit them separately (i.e. separate "Submit" buttons).
 
-* Show error message when unsupported characters are entered in the Template Outfile or Template Name text field options.
+* v1.0 - Show error message when unsupported characters are entered in the Template Outfile or Template Name text field options.
 
-* Allow for multiple values: &lt;mt:TemplateSelector name="foo"&gt; .
+* v1.0 - Add template_build_type as option to the template_menu_builder (choose between 5 publishing options) .
 
-* Extend other Melody objects: &lt;mt:TemplateSelector object="Category" name="bar"&gt; .
+* v1.0 - Support new tag &lt;mt:TemplateSelectorIdentifier&gt; (outputs template identifier) .
+
+* v2.0 - Allow for multiple values: &lt;mt:TemplateSelector name="foo"&gt; .
+
+* v3.0 - Extend other Melody objects: &lt;mt:TemplateSelector object="Category" name="bar"&gt; .
 
 # THANKS
 Thanks to Byrne Reese for guidance, support, and code examples in his PageLayout plugin for Melody.
