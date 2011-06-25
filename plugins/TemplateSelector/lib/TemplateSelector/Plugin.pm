@@ -20,10 +20,6 @@ sub edit_entry_param {
   my $plugin = MT->component("TemplateSelector");
   $template_selector = $template_selector || $plugin->get_config_value( 'template_selector_default',
     'blog:' . $app->blog->id );
-  $app->log({
-    message => "New TS value is '"
-      . $template_selector . "'."
-  });
   # retrieve stored template selector menu
   my $ts_menu_string;
   $ts_menu_string = $blog->meta('ts_menu_string');  
@@ -48,6 +44,7 @@ sub edit_entry_param {
 sub cms_post_save_entry {
   my ( $cb, $entry, $entry_orig ) = @_;
   my $ts_selection;
+  my $entry_id = $entry->id;
   my $app = MT->app;
   return unless $app->isa('MT::App');
   my $q = $app->can('query') ? $app->query : $app->param;
@@ -57,6 +54,11 @@ sub cms_post_save_entry {
   if ($ts_selection) {
     $entry->template_selector($ts_selection);
     $entry->save;
+
+    $app->log({
+      message => "Entry #" . $entry_id . " selected template '"
+      . $ts_selection . "'."
+    });
   }
   return 1;
 }
