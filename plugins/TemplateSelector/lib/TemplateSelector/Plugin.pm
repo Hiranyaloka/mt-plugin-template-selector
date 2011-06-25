@@ -120,93 +120,91 @@ sub _hdlr_ts_menu {
 sub ts_options {
   my ($cb, $app, $option_hash, $old_value, $new_value) = @_;
  
- unless ($old_value eq $new_value) {
+  unless ($old_value eq $new_value) {
  
- my $blog = $app->blog;
-  my $blog_id = $blog->id;
-  my $scope = "blog:" . $blog_id;
-  my $option = $option_hash->{basename};
-  $app->log({
-    message => "Changing " . $option
+    my $blog = $app->blog;
+    my $blog_id = $blog->id;
+    my $scope = "blog:" . $blog_id;
+    my $option = $option_hash->{basename};
+    $app->log({
+      message => "Changing " . $option
       . " from '" . $old_value 
       . "' to '" . $new_value . "'."
-  });
-
-  # get the option values
-  my $plugin = MT->component("TemplateSelector");
-  my $ts_trim = ($option eq 'ts_trim') ? $new_value : $plugin->get_config_value( 'ts_trim', $scope );
-  my $ts_type_string = ($option eq 'ts_type') ? $new_value : $plugin->get_config_value( 'ts_type', $scope );
-  my $ts_outfile_string = ($option eq 'ts_outfile') ? $new_value : $plugin->get_config_value( 'ts_outfile', $scope );
-  my $ts_name_string = ($option eq 'ts_name') ? $new_value : $plugin->get_config_value( 'ts_name', $scope );
-
-  # untaint the outfile option 
-  {
-    $ts_outfile_string =~ /^([\w\s\.\-\/%]+)$/;
-    $ts_outfile_string = $1;
-  }
-  # untaint the name option
-  {
-    $ts_name_string =~ /^([\w\s\.\-\/%]+)$/;
-    $ts_name_string = $1;
-  }
-
-  # trim leading/trailing whitespace if ts_trim option is set
-  if ($ts_trim) {
-    $ts_outfile_string = ts_trim_whitespace($ts_outfile_string);
-    $ts_name_string = ts_trim_whitespace($ts_name_string);
-  }
- 
-   $app->log({
-    message => "ts_type_string: '" . $ts_type_string
-      . "' ts_outfile_string: '" . $ts_outfile_string
-      . "' ts_name_string: '" . $ts_name_string . "'"
-  });
- 
-  my @maps;
-# my @maps = MT::Template->load({ $ts_name_string, $ts_type_string, $ts_outfile_string, blog_id => $blog->id, });
-  if ($ts_type_string and (! $ts_outfile_string) and (! $ts_name_string)) {
-    mt_log($app, 'Only type selected');
-    @maps = MT::Template->load({ type => "$ts_type_string", blog_id => $blog->id, });
-  } elsif ($ts_outfile_string and (! $ts_name_string)) {
-    mt_log($app, 'Only type and outfile selected');
-    @maps = MT::Template->load({ type => "$ts_type_string", outfile => {like => "$ts_outfile_string" },
-      blog_id => $blog->id, });
-  } elsif ((! $ts_type_string) and $ts_name_string) {
-    mt_log($app, 'Only name selected');
-    @maps = MT::Template->load({ name => {like => "$ts_name_string" }, blog_id => $blog->id, });
-  } elsif ($ts_type_string and (! $ts_outfile_string) and $ts_name_string) {
-    mt_log($app, 'Only type and name selected');
-    @maps = MT::Template->load({ type => "$ts_type_string", name => {like => "$ts_name_string" },
-      blog_id => $blog->id, });
-  } elsif ($ts_outfile_string and $ts_name_string) {
-    mt_log($app, 'Type outfile and name selected');
-    @maps = MT::Template->load({ type => "$ts_type_string", outfile => {like => "$ts_outfile_string" },
-      name => {like => "$ts_name_string" }, blog_id => $blog->id, });
-  } elsif ((! $ts_type_string) and (! $ts_name_string)) {
-    @maps = MT::Template->load();
-  } else {
-    return 1;
-  }
-
-  # extract the template names.
-  my @names = map {$_->name} @maps;
-  # filter out backup templates.
-  my @names = grep {(! /Backup \d{4}\-\d{2}\-d{2}/)} @names;
-  my $ts_menu_string = join ('|', @names);
-  # retrieve ts_menu_string from db and save if changed
-  my $ts_menu_string_db = $blog->meta('ts_menu_string');
-  unless ($ts_menu_string eq $ts_menu_string_db) {
-    $app->log({
-      message => "Saving ts_menu_string '"
-        . $ts_menu_string . "' to database."
     });
+
+    # get the option values
+    my $plugin = MT->component("TemplateSelector");
+    my $ts_trim = ($option eq 'ts_trim') ? $new_value : $plugin->get_config_value( 'ts_trim', $scope );
+    my $ts_type_string = ($option eq 'ts_type') ? $new_value : $plugin->get_config_value( 'ts_type', $scope );
+    my $ts_outfile_string = ($option eq 'ts_outfile') ? $new_value : $plugin->get_config_value( 'ts_outfile', $scope );
+    my $ts_name_string = ($option eq 'ts_name') ? $new_value : $plugin->get_config_value( 'ts_name', $scope );
+
+    # untaint the outfile option 
+    {
+      $ts_outfile_string =~ /^([\w\s\.\-\/%]+)$/;
+      $ts_outfile_string = $1;
+    }
+    # untaint the name option
+    {
+      $ts_name_string =~ /^([\w\s\.\-\/%]+)$/;
+      $ts_name_string = $1;
+    }
+
+    # trim leading/trailing whitespace if ts_trim option is set
+    if ($ts_trim) {
+      $ts_outfile_string = ts_trim_whitespace($ts_outfile_string);
+      $ts_name_string = ts_trim_whitespace($ts_name_string);
+    }
+ 
+    $app->log({
+      message => "ts_type_string: '" . $ts_type_string
+        . "' ts_outfile_string: '" . $ts_outfile_string
+        . "' ts_name_string: '" . $ts_name_string . "'"
+    });
+ 
+    my @maps;
+    # my @maps = MT::Template->load({ $ts_name_string, $ts_type_string, $ts_outfile_string, blog_id => $blog->id, });
+    if ($ts_type_string and (! $ts_outfile_string) and (! $ts_name_string)) {
+      mt_log($app, 'Only type selected');
+      @maps = MT::Template->load({ type => "$ts_type_string", blog_id => $blog->id, });
+    } elsif ($ts_outfile_string and (! $ts_name_string)) {
+      mt_log($app, 'Only type and outfile selected');
+      @maps = MT::Template->load({ type => "$ts_type_string", outfile => {like => "$ts_outfile_string" },
+        blog_id => $blog->id, });
+    } elsif ((! $ts_type_string) and $ts_name_string) {
+      mt_log($app, 'Only name selected');
+      @maps = MT::Template->load({ name => {like => "$ts_name_string" }, blog_id => $blog->id, });
+    } elsif ($ts_type_string and (! $ts_outfile_string) and $ts_name_string) {
+      mt_log($app, 'Only type and name selected');
+      @maps = MT::Template->load({ type => "$ts_type_string", name => {like => "$ts_name_string" },
+        blog_id => $blog->id, });
+    } elsif ($ts_outfile_string and $ts_name_string) {
+      mt_log($app, 'Type outfile and name selected');
+      @maps = MT::Template->load({ type => "$ts_type_string", outfile => {like => "$ts_outfile_string" },
+        name => {like => "$ts_name_string" }, blog_id => $blog->id, });
+    } elsif ((! $ts_type_string) and (! $ts_name_string)) {
+      @maps = MT::Template->load();
+    } else {
+      return 1;
+    }
+
+    # extract the template names.
+    my @names = map {$_->name} @maps;
+    # filter out backup templates.
+    my @names = grep {(! /Backup \d{4}\-\d{2}\-d{2}/)} @names;
+    my $ts_menu_string = join ('|', @names);
+    # retrieve ts_menu_string from db and save if changed
+    my $ts_menu_string_db = $blog->meta('ts_menu_string');
+    unless ($ts_menu_string eq $ts_menu_string_db) {
+      $app->log({
+        message => "Saving ts_menu_string '"
+          . $ts_menu_string . "' to database."
+      });
   
-    $blog->meta('ts_menu_string', $ts_menu_string);
-    $blog->save;
-  }
-
+      $blog->meta('ts_menu_string', $ts_menu_string);
+      $blog->save;
+    }
   }   
-
   return 1;
 }
 
@@ -217,7 +215,6 @@ sub mt_log {
    $app->log({
     message => $msg
   });
-
 }
 
 sub ts_trim_whitespace {
