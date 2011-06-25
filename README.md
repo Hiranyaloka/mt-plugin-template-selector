@@ -72,7 +72,7 @@ Template Selector surfaces a dropdown list populated with the templates derived 
 # INSTALLATION
 To install this plugin follow the instructions found here:
 
-http://tinyurl.com/easy-plugin-install
+https://github.com/openmelody/melody/wiki/install-EasyPluginInstallGuide
 
 # DEPENDENCIES
 Melody or Movable Type 4 with __ConfigAssistant 2.1.33 or above__. (ConfigAssistant 2.1.33 [added the options basename to the option_hash for callbacks](https://github.com/openmelody/mt-plugin-configassistant/commit/2e80e4edf7de4fbe6a05df2c11b0f55729d9e974)).
