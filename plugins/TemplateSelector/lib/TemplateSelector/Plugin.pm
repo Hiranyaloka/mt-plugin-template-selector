@@ -191,16 +191,19 @@ sub ts_options {
   # extract the template names.
   my @names = map {$_->name} @maps;
   # filter out backup templates.
-  my @names = grep {(! /\(Backup \d{4}\-\d{2}\-d{2}/)} @names;
+  my @names = grep {(! /Backup \d{4}\-\d{2}\-d{2}/)} @names;
   my $ts_menu_string = join ('|', @names);
+  # retrieve ts_menu_string from db and save if changed
+  my $ts_menu_string_db = $blog->meta('ts_menu_string');
+  unless ($ts_menu_string eq $ts_menu_string_db) {
+    $app->log({
+      message => "Saving ts_menu_string '"
+        . $ts_menu_string . "' to database."
+    });
   
-  $app->log({
-    message => "Saving ts_menu_string '"
-      . $ts_menu_string . "' to database."
-  });
-  
-  $blog->meta('ts_menu_string', $ts_menu_string);
-  $blog->save;
+    $blog->meta('ts_menu_string', $ts_menu_string);
+    $blog->save;
+  }
 
   }   
 
