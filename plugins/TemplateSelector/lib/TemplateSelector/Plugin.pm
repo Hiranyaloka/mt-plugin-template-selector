@@ -1,6 +1,5 @@
 package TemplateSelector::Plugin;
 use strict;
-use MT::Template;
 
 # EDIT ENTRY/PAGE CALLBACK - insert template selection menu for TemplateSelector tag config
 # some code lifted from Endevver's Supr plugin and Byrne Reese's PageLayout plugin
@@ -22,7 +21,7 @@ sub edit_entry_param {
     'blog:' . $app->blog->id );
   # retrieve stored template selector menu
   my $ts_menu_string;
-  $ts_menu_string = $blog->meta('ts_menu_string');  
+  $ts_menu_string = $blog->ts_menu_string;  
   my @ts_options = split( /\s*\|\s*/, $ts_menu_string );
   push @ts_options, '';
   # generate template selector menu
@@ -90,7 +89,7 @@ sub _hdlr_template_selector {
     'blog:' . $blog_id );
   my $entry = $ctx->stash('entry');
   return '' if !$entry;
-  return $entry->meta('template_selector') || $template_selector_default || '';
+  return $entry->template_selector || $template_selector_default || '';
 }
 
 # CUSTOM CONFIG_TYPE - Blog-level template selector menu
@@ -98,21 +97,19 @@ sub _hdlr_ts_menu {
   my $app = shift;
   my ($field_id, $field, $value) = @_;
   my $blog = $app->blog;
-  my $ts_menu_string = $blog->meta('ts_menu_string');
+  my $ts_menu_string = $blog->ts_menu_string;
   
   my $plugin = MT->component("TemplateSelector");
   my $template_selector_default = $plugin->get_config_value( 'template_selector_default',
     'blog:' . $app->blog->id );
   my @ts_options = split( /\|/, $ts_menu_string );
   push @ts_options, '';
-  my $class  = 'class="ts_menu"';
-  my $type   = 'type="select"';
   my $options;
   foreach my $opt (@ts_options) {
     my $selected = ($template_selector_default eq $opt);
     $options .= '<option value="'.$opt.'"'.($selected ? ' selected' : '').'>'.$opt."</option>\n";
     }
-  return '<select name="template_selector_default">' . $options . '</select>' ;
+  return '<select name="template_selector_default" class="ts_menu">' . $options . '</select>' ;
 }
 
 # OPTIONS CALLBACK - template options
@@ -194,7 +191,7 @@ sub ts_options {
     my @names = grep {(! /Backup \d{4}\-\d{2}\-d{2}/)} @names;
     my $ts_menu_string = join ('|', @names);
     # retrieve ts_menu_string from db and save if changed
-    my $ts_menu_string_db = $blog->meta('ts_menu_string');
+    my $ts_menu_string_db = $blog->ts_menu_string;
     unless ($ts_menu_string eq $ts_menu_string_db) {
       $app->log({
         message => "Saving ts_menu_string '"
