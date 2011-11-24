@@ -87,29 +87,28 @@ I would like to hear about your experience with TemplateSelector. Leave a commen
 * Initial setting of the template “Type” field to “Index” at the same time as setting the Template “Outfile” option (in plugin settings) returns no templates to the list. The fix is to set the Template “Type” option by itself and subsequently add the Template “Outfile” option.
 
 ## Road Map
-* v1.0 - Changes to the menu builder and default template options are submitted at the same time (with a single "Save Changes" button). Because the former affects the latter, it makes more sense to submit them separately (i.e. separate "Submit" buttons).
+* Changes to the menu builder and default template options are submitted at the same time (with a single "Save Changes" button). Because the former affects the latter, it makes more sense to submit them separately (i.e. separate "Submit" buttons).
 
-* v1.0 - Show error message when unsupported characters are entered in the Template Outfile or Template Name text field options.
+* Show error message when unsupported characters are entered in the Template Outfile or Template Name text field options.
 
-* v1.0 - Add template_build_type as option to the template_menu_builder (choose between 5 publishing options) .
+* Add template_build_type as option to the template_menu_builder (choose between 5 publishing options) .
 
-* v1.0 - Support new tag &lt;mt:TemplateSelectorIdentifier&gt; (outputs template identifier) .
+* Support new tag &lt;mt:TemplateSelectorIdentifier&gt; (outputs template identifier) .
 
-* v2.0 - Allow for multiple values: &lt;mt:TemplateSelector name="foo"&gt; .
+* Allow for multiple values: &lt;mt:TemplateSelector name="foo"&gt; .
 
-* v3.0 - Extend other Melody objects: &lt;mt:TemplateSelector object="Category" name="bar"&gt; .
+* Extend other Melody objects: &lt;mt:TemplateSelector object="Category" name="bar"&gt; .
 
 # THANKS
-Thanks to Byrne Reese for guidance, support, and code examples in his PageLayout plugin for Melody.
-
-Thanks also to the Melody team for ConfigAssistant and code examples from the Supr plugin.
+Thanks to Byrne Reese and the Melody team for ConfigAssistant and other valuable support.
 
 # COPYRIGHT AND LICENSE
 
-The software is released under the Artistic License. The
-terms of the Artistic License are described at
-http://www.perl.com/language/misc/Artistic.html .
+This program is free software; you can redistribute it and/or modify it
+under the terms of either: the GNU General Public License as published
+by the Free Software Foundation; or the Artistic License.
 
-Except where otherwise noted, TemplateSelector is Copyright 2011,
-Rick Bychowski, rick@hiranyaloka.com for Hiranyaloka. All
-rights reserved.
+See http://dev.perl.org/licenses/ for more information.
+
+TemplateSelector is Copyright 2011, Rick Bychowski, rick@hiranyaloka.com.
+All rights reserved.
