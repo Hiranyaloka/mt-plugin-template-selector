@@ -54,7 +54,7 @@ options:
     label: 'Template Types'
     hint: 'Limit list to a single template type.'
     delimiter: ','
-    values: ',widget,index,archive,category,individual,custom,popup_image,comments,comment_preview,comment_error'
+    values: ',index,archive,category,individual,custom,popup_image,comments,comment_preview,comment_error'
     default: ''
     fieldset: template_selector_options
     scope: blog
