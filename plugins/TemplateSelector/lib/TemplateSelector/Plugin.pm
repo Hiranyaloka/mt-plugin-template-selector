@@ -18,7 +18,7 @@ sub edit_entry_param {
     my $type = $param->{object_type};
     my $class = $app->model($type);
     $entry = $class->load($param->{id});
-    $template_selector = $entry->template_selector() || '';
+    $template_selector = $entry->template_selector || '';
   }
   #fall back to default if empty 
   my $blog_id = $blog->id;
