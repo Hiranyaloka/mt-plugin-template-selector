@@ -31,14 +31,6 @@ sub edit_entry_param {
     'blog:' . $app->blog->id );
   my $wss_show_menu = $plugin->get_config_value( 'wss_show_menu',
     'blog:' . $app->blog->id );
-  $param->{html_head} ||= '';
-  unless ($ts_show_menu && $ws_show_menu && $wss_show_menu) {
-    $param->{html_head} .= '<style type="text/css">';
-    $param->{html_head} .= '#template_selector-field {display: none;}' unless $ts_show_menu;
-    $param->{html_head} .= '#widget_selector-field {display: none;}' unless $ws_show_menu;
-    $param->{html_head} .= '#widgetset_selector-field {display: none;}' unless $wss_show_menu;
-    $param->{html_head} .= '</style>';  
-  }
   $template_selector = $template_selector || $plugin->get_config_value( 'template_selector_default',
     'blog:' . $app->blog->id );
   $widget_selector = $widget_selector || $plugin->get_config_value( 'widget_selector_default',
@@ -76,17 +68,17 @@ sub edit_entry_param {
       .'>'.$_."</option>\n";
   }
   my $ts_setting = $tmpl->createElement('app:setting', { 
-    id => 'template_selector', label => "Template Selector" });
+    id => 'template_selector', label => "Template Selector", shown => $ts_show_menu });
   $ts_setting->innerHTML('<select name="template_selector">'.$ts_opts.'</select>');
   $tmpl->insertAfter($ts_setting,$tmpl->getElementById('authored_on'));    
 
   my $ws_setting = $tmpl->createElement('app:setting', { 
-    id => 'widget_selector', label => "Widget Selector" });
+    id => 'widget_selector', label => "Widget Selector", shown => $ws_show_menu });
   $ws_setting->innerHTML('<select name="widget_selector">'.$ws_opts.'</select>');
   $tmpl->insertAfter($ws_setting,$tmpl->getElementById('authored_on'));    
 
   my $wss_setting = $tmpl->createElement('app:setting', { 
-    id => 'widgetset_selector', label => "Widget Set Selector" });
+    id => 'widgetset_selector', label => "Widget Set Selector", shown => $wss_show_menu });
   $wss_setting->innerHTML('<select name="widgetset_selector">'.$wss_opts.'</select>');
   $tmpl->insertAfter($wss_setting,$tmpl->getElementById('authored_on'));    
 
