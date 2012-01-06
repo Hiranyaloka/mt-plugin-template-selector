@@ -2,10 +2,10 @@ id: 'TemplateSelector'
 key: 'TemplateSelector'
 name: 'Template Selector'
 description: 'Select a template within an Entry or Page.'
-version: 1.0
+version: 1.1
 author_name: 'Rick Bychowski'
 author_link: http://hiranyaloka.com/
-schema_version: 0.95
+schema_version: 0.96
 plugin_link: http://hiranyaloka.com/website_design_encinitas/software/templateselector-plugin-for-melody-and-mt4.html
 
 callbacks:
@@ -13,23 +13,30 @@ callbacks:
   MT::Entry::post_save: $TemplateSelector::TemplateSelector::Plugin::cms_post_save_entry
   MT::Page::post_save: $TemplateSelector::TemplateSelector::Plugin::cms_post_save_page
   options_change.option.ts_trim: $TemplateSelector::TemplateSelector::Plugin::ts_options
+  options_change.option.ts_trim: $TemplateSelector::TemplateSelector::Plugin::ws_options
   options_change.option.ts_type: $TemplateSelector::TemplateSelector::Plugin::ts_options
   options_change.option.ts_outfile: $TemplateSelector::TemplateSelector::Plugin::ts_options
   options_change.option.ts_name: $TemplateSelector::TemplateSelector::Plugin::ts_options
+  options_change.option.ws_name: $TemplateSelector::TemplateSelector::Plugin::ws_options
  
 object_types:
   entry:
     template_selector: string meta
+    widget_selector: string meta
   blog:
     ts_menu_string: string meta
+    ws_menu_string: string meta
 
 tags:
   function:
     TemplateSelector: $TemplateSelector::TemplateSelector::Plugin::_hdlr_template_selector
+    WidgetSelector: $TemplateSelector::TemplateSelector::Plugin::_hdlr_widget_selector
 
 config_types:
   template_selector_menu:
      handler: $TemplateSelector::TemplateSelector::Plugin::_hdlr_ts_menu   
+  widget_selector_menu:
+     handler: $TemplateSelector::TemplateSelector::Plugin::_hdlr_ws_menu   
 
 options:
   fieldsets:
@@ -41,12 +48,19 @@ options:
       label: 'Template Selector default value'
       hint: 'Set the default template.'
       order: 2      
+    widget_selector_options:
+      label: 'Widget Selector menu builder'
+      hint: 'Assign a name (wildcards allowed) to create a selectable list of widgets.'
+      order: 3      
+    widget_selector_default:
+      label: 'Widget Selector default value'
+      hint: 'Set the default widget.'
+      order: 4      
   ts_trim:
     type: checkbox
     label: 'Trim leading/trailing whitespace?'
     hint: 'Uncheck to preserve leading/trailing whitespace in your outfile and name option terms.'
     default: 1
-    fieldset: template_selector_options
     scope: blog
     order: 1
   ts_type:
@@ -58,7 +72,7 @@ options:
     default: ''
     fieldset: template_selector_options
     scope: blog
-    order: 2
+    order: 1
   ts_outfile:
     type: text
     label: 'Index Template Outfile Name/Path'
@@ -66,7 +80,7 @@ options:
     default: ''
     fieldset: template_selector_options
     scope: blog
-    order: 3
+    order: 2
   ts_name:
     type: text
     label: 'Template Names'
@@ -74,7 +88,7 @@ options:
     default: ''
     fieldset: template_selector_options
     scope: blog
-    order: 4
+    order: 3
   template_selector_default:
     type: template_selector_menu
     label: 'Set Default Template'
@@ -83,7 +97,22 @@ options:
     fieldset: template_selector_default
     scope: blog
     order: 1
-
+  ws_name:
+    type: text
+    label: 'Widget Names'
+    hint: 'A widget name (supports multiple "%" and single "_" character  wildcards).'
+    default: ''
+    fieldset: widget_selector_options
+    scope: blog
+    order: 1
+  widget_selector_default:
+    type: widget_selector_menu
+    label: 'Set Default Widget'
+    hint: 'Select the default widget name which the WidgetSelector tag will output blog-wide.'
+    default: ''
+    fieldset: widget_selector_default
+    scope: blog
+    order: 1
 
     
   

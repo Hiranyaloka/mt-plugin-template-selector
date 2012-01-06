@@ -1,7 +1,13 @@
-TemplateSelector extends entries and pages with a new "TemplateSelector" custom field. The "TemplateSelector" tag can output the name of any template in your blog.
+The TemplateSelector plugin allows Authors to choose from templates and widgets to alter the display or function of each individual page or entry.
 
-# USAGE
-Within entry or page context of a template, use the tag to include a template by name:
+TemplateSelector extends entries and pages with a new `TemplateSelector` custom field and associated tag. First you configure the plugin to automatically display a select list from your blog templates. You can set a default template from that list. Your desired list of templates is made available from within Page/Entry Edit forms. In your Entry or Page templates, the `TemplateSelector` tag will output the name of the selected (or default) template.
+
+The plugin has been extended with an additional custom field and tag, `WidgetSelector`. So now you can also easily display a select list of widgets as a custom field within your Entry and Page edit forms.
+
+
+# USAGE EXAMPLES
+## Using the tags in your Entry or Page templates (Designer)
+Within entry or page context of a template, use the `TemplateSelector` tag to include a template by name:
 
     <mt:Include name="<mt:TemplateSelector>">
 
@@ -9,11 +15,15 @@ Or perhaps use the tag to set a variable:
 
     <mt:If tag="TemplateSelector"><mt:TemplateSelector setvar="my_template_name"></mt:If>
 
-Then later in that template set a custom stylesheet:
+Then (for example) later in that template set a custom stylesheet:
 
     <link id="my_custom_layout" rel="stylesheet" href="<mt:Link template="$my_template_name">" type="text/css" media="screen" />
 
-## Setting The Tag Value
+Similarly, you can use the `WidgetSelector` tag to allow your Authors to choose from a subset of widgets:
+
+<mt:Include widget="<mt:WidgetSelector>">
+
+## Setting The Tag Value (Author)
 
 Simply select a template name from a pull-down menu within the "edit entry/page" form.
 
@@ -39,7 +49,7 @@ Select from a single template type, or choose blank to return all types (blank i
 * BLANK - returns all types (default).
 
 ## Index Template Outfile (optional - requires Index type selection)
-When the Index type is active, this text field matches against the Index Template Outfile path/name (precisely as shown in the "Design::Themes" panel of your blog's dashboard). Allows only certain characters (see below). Supports any combination of percent '%' and '_' wildcards. For example:
+When the Index type is active, this text field matches against the Index Template Outfile path/name (precisely as shown in the "Design::Themes" panel of your blog's dashboard). Allows only certain characters (see below). Supports any combination of percent '%' (multiple character wildcard) and '_' (single character wildcard). For example:
 
 * '%.css' matches index style sheets.
 * 'archives/%' matches any index templates with outfiles written to your blog root archives directory.
@@ -49,6 +59,7 @@ A simple text field matching the template name(s). Practically useful only when 
 
 * Entry% - matches 'Entry', 'Entry Monthly', and 'Entry Listing'.
 * Foo_Ba% - matches 'FoodBar', 'FootBall', 'Foo_Bar', etc.
+* % - matches all templates.
 
 ## Allowed Characters for Outfile and Name fields
 * Word characters - alphanumeric plus underscore.
@@ -56,6 +67,14 @@ A simple text field matching the template name(s). Practically useful only when 
 * Symbols (outfile) - Hyphen '-', period '.', and forward slash '/'.
 * Symbols (name) - Hyphen '-' and period '.' .
 * Wildcard - Percent '%' matches any characters, underscore "_" matches a single character.
+
+# WIDGET SELECTOR MENU BUILDER
+
+The widget menu builder is a bit simpler. Filtering is done soley by name:
+
+ * % matches all widgets
+ * Recent% - matches all widgets beginning with "Recent"
+ * widget_ - matches 'widget1', 'widget2', widgetx', 'widgety', etc.
 
 ## Trim Leading/Trailing Whitespace checkbox
 When checked, leading/trailing whitespace will be trimmed from the Outfile and Name fields. Default is checked.
