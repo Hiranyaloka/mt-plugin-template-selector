@@ -93,6 +93,10 @@ To install this plugin follow the instructions found here:
 
 https://github.com/openmelody/melody/wiki/install-EasyPluginInstallGuide
 
+# CHANGES
+
+- Version 1.2 - Add WidgetSelector tag.
+
 # DEPENDENCIES
 Melody or Movable Type 4 with __ConfigAssistant 2.1.33 or above__. (ConfigAssistant 2.1.33 [added the options basename to the option_hash for callbacks](https://github.com/openmelody/mt-plugin-configassistant/commit/2e80e4edf7de4fbe6a05df2c11b0f55729d9e974)).
 
@@ -106,17 +110,11 @@ I would like to hear about your experience with TemplateSelector. Leave a commen
 * Initial setting of the template “Type” field to “Index” at the same time as setting the Template “Outfile” option (in plugin settings) returns no templates to the list. The fix is to set the Template “Type” option by itself and subsequently add the Template “Outfile” option.
 
 ## Road Map
-* Changes to the menu builder and default template options are submitted at the same time (with a single "Save Changes" button). Because the former affects the latter, it makes more sense to submit them separately (i.e. separate "Submit" buttons).
-
-* Show error message when unsupported characters are entered in the Template Outfile or Template Name text field options.
+* New tag WidgetSetSelector
 
 * Add template_build_type as option to the template_menu_builder (choose between 5 publishing options) .
 
-* Support new tag &lt;mt:TemplateSelectorIdentifier&gt; (outputs template identifier) .
-
 * Allow for multiple values: &lt;mt:TemplateSelector name="foo"&gt; .
-
-* Extend other Melody objects: &lt;mt:TemplateSelector object="Category" name="bar"&gt; .
 
 # THANKS
 Thanks to Byrne Reese and the Melody team for ConfigAssistant and other valuable support.
