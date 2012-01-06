@@ -71,13 +71,15 @@ A simple text field matching the template name(s). Practically useful only when 
 * Symbols (name) - Hyphen '-' and period '.' .
 * Wildcard - Percent '%' matches any characters, underscore "_" matches a single character.
 
-## WIDGET SELECTOR MENU BUILDER ##
+## WIDGET SELECTOR AND WIDGET SET MENU BUILDERS ##
 
-The widget menu builder is a bit simpler. Filtering is done soley by name:
+The widget menu builder and widget set menu builder are a bit simpler. Filtering is done by name:
 
  * `%` matches all widgets
  * `Recent%` matches all widgets beginning with "Recent"
  * `widget_`  matches 'widget1', 'widget2', widgetx', 'widgety', etc.
+ 
+ And similarly for widget set names. So for example, if you wanted to present a choice of several sidebar widget sets, you could for example name them sidebar_moe, sidebar_larry, and sidebar_curly. Then filter the selections with "sidebar_%". Then the entry and page forms would have a choice of those three widget sets availble to the Author.
 
 ### Trim Leading/Trailing Whitespace checkbox ###
 When checked, leading/trailing whitespace will be trimmed from the Outfile and Name fields. Default is checked.
