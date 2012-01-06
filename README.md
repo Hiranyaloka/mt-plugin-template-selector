@@ -50,15 +50,15 @@ Select from a single template type, or choose blank to return all types (blank i
 ### Index Template Outfile (optional - requires Index type selection) ###
 When the Index type is active, this text field matches against the Index Template Outfile path/name (precisely as shown in the "Design::Themes" panel of your blog's dashboard). Allows only certain characters (see below). Supports any combination of percent '%' (multiple character wildcard) and '_' (single character wildcard). For example:
 
-* '%.css' matches index style sheets.
-* 'archives/%' matches any index templates with outfiles written to your blog root archives directory.
+* `%.css` matches index style sheets.
+* `archives/%` matches any index templates with outfiles written to your blog root archives directory.
 
 ### Template Name (optional) ###
 A simple text field matching the template name(s). Practically useful only when used with the wildcard characters (otherwise you can only possibly match a single template).
 
-* Entry% - matches 'Entry', 'Entry Monthly', and 'Entry Listing'.
-* Foo_Ba% - matches 'FoodBar', 'FootBall', 'Foo_Bar', etc.
-* % - matches all templates.
+* `Entry%` matches 'Entry', 'Entry Monthly', and 'Entry Listing'.
+* `Foo_Ba%` matches 'FoodBar', 'FootBall', 'Foo_Bar', etc.
+* `%` matches all templates.
 
 ### Allowed Characters for Outfile and Name fields ###
 * Word characters - alphanumeric plus underscore.
@@ -71,9 +71,9 @@ A simple text field matching the template name(s). Practically useful only when 
 
 The widget menu builder is a bit simpler. Filtering is done soley by name:
 
- * % matches all widgets
- * Recent% - matches all widgets beginning with "Recent"
- * widget_ - matches 'widget1', 'widget2', widgetx', 'widgety', etc.
+ * `%` matches all widgets
+ * `Recent%` matches all widgets beginning with "Recent"
+ * `widget_`  matches 'widget1', 'widget2', widgetx', 'widgety', etc.
 
 ### Trim Leading/Trailing Whitespace checkbox ###
 When checked, leading/trailing whitespace will be trimmed from the Outfile and Name fields. Default is checked.
