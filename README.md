@@ -20,7 +20,7 @@ Then (for example) later in that template set a custom stylesheet:
 
 Similarly, you can use the `WidgetSelector` tag to allow your Authors to choose from a subset of widgets:
 
-<mt:Include widget="<mt:WidgetSelector>">
+    <mt:Include widget="<mt:WidgetSelector>">
 
 ### Setting The Tag Value (Author) ###
 
