@@ -12,7 +12,7 @@ use strict;
 sub edit_entry_param {
   my ($cb, $app, $param, $tmpl) = @_;
   my $blog = $app->blog;
-  my ($entry, $template_selector, $widget_selector);
+  my ($entry, $template_selector, $widget_selector, $widgetset_selector);
   # retrieve if previous template/widget selector values
   if ($param->{id}) {
     my $type = $param->{object_type};
@@ -20,22 +20,42 @@ sub edit_entry_param {
     $entry = $class->load($param->{id});
     $template_selector = $entry->template_selector || '';
     $widget_selector = $entry->widget_selector || '';
-  }
+     $widgetset_selector = $entry->widgetset_selector || '';
+ }
   #fall back to defaults if empty 
   my $blog_id = $blog->id;
   my $plugin = MT->component("TemplateSelector");
+  my $ts_show_menu = $plugin->get_config_value( 'ts_show_menu',
+    'blog:' . $app->blog->id );
+  my $ws_show_menu = $plugin->get_config_value( 'ws_show_menu',
+    'blog:' . $app->blog->id );
+  my $wss_show_menu = $plugin->get_config_value( 'wss_show_menu',
+    'blog:' . $app->blog->id );
+  $param->{html_head} ||= '';
+  unless ($ts_show_menu && $ws_show_menu && $wss_show_menu) {
+    $param->{html_head} .= '<style type="text/css">';
+    $param->{html_head} .= '#template_selector-field {display: none;}' unless $ts_show_menu;
+    $param->{html_head} .= '#widget_selector-field {display: none;}' unless $ws_show_menu;
+    $param->{html_head} .= '#widgetset_selector-field {display: none;}' unless $wss_show_menu;
+    $param->{html_head} .= '</style>';  
+  }
   $template_selector = $template_selector || $plugin->get_config_value( 'template_selector_default',
     'blog:' . $app->blog->id );
   $widget_selector = $widget_selector || $plugin->get_config_value( 'widget_selector_default',
     'blog:' . $app->blog->id );
+  $widgetset_selector = $widgetset_selector || $plugin->get_config_value( 'widgetset_selector_default',
+    'blog:' . $app->blog->id );
   # retrieve stored template selector menu
-  my ($ts_menu_string, $ws_menu_string);
+  my ($ts_menu_string, $ws_menu_string, $wss_menu_string);
   $ts_menu_string = $blog->ts_menu_string;  
   $ws_menu_string = $blog->ws_menu_string;  
+  $wss_menu_string = $blog->wss_menu_string;  
   my @ts_options = split( /\s*\|\s*/, $ts_menu_string );
   push @ts_options, '';
   my @ws_options = split( /\s*\|\s*/, $ws_menu_string );
   push @ws_options, '';
+  my @wss_options = split( /\s*\|\s*/, $wss_menu_string );
+  push @wss_options, '';
   # generate template/widget selector menu
   my $ts_opts;
   foreach (@ts_options) {
@@ -49,6 +69,12 @@ sub edit_entry_param {
     $ws_opts .= '<option value="'.$_.'"'.($ws_selected ? ' selected' : $widget_selector)
       .'>'.$_."</option>\n";
   }
+ my $wss_opts;
+  foreach (@wss_options) {
+    my $wss_selected = ($widgetset_selector eq $_);
+    $wss_opts .= '<option value="'.$_.'"'.($wss_selected ? ' selected' : $widgetset_selector)
+      .'>'.$_."</option>\n";
+  }
   my $ts_setting = $tmpl->createElement('app:setting', { 
     id => 'template_selector', label => "Template Selector" });
   $ts_setting->innerHTML('<select name="template_selector">'.$ts_opts.'</select>');
@@ -57,7 +83,12 @@ sub edit_entry_param {
   my $ws_setting = $tmpl->createElement('app:setting', { 
     id => 'widget_selector', label => "Widget Selector" });
   $ws_setting->innerHTML('<select name="widget_selector">'.$ws_opts.'</select>');
-  $tmpl->insertAfter($ws_setting,$tmpl->getElementById('template_selector'));    
+  $tmpl->insertAfter($ws_setting,$tmpl->getElementById('authored_on'));    
+
+  my $wss_setting = $tmpl->createElement('app:setting', { 
+    id => 'widgetset_selector', label => "Widget Set Selector" });
+  $wss_setting->innerHTML('<select name="widgetset_selector">'.$wss_opts.'</select>');
+  $tmpl->insertAfter($wss_setting,$tmpl->getElementById('authored_on'));    
 
   $param;
 }
@@ -65,7 +96,7 @@ sub edit_entry_param {
 # EDIT ENTRY CALLBACK - Save selected template name to db
 sub cms_post_save_entry {
   my ( $cb, $entry, $entry_orig ) = @_;
-  my ($ts_selection, $ws_selection);
+  my ($ts_selection, $ws_selection, $wss_selection);
   my $entry_id = $entry->id;
   my $app = MT->app;
   return unless $app->isa('MT::App');
@@ -73,27 +104,31 @@ sub cms_post_save_entry {
   if ( $app->can('param') ) {
     $ts_selection = $q->param('template_selector');
     $ws_selection = $q->param('widget_selector');
+    $wss_selection = $q->param('widgetset_selector');
   }
   $entry->template_selector($ts_selection) if $ts_selection;
   $entry->widget_selector($ws_selection) if $ws_selection;
-  $entry->save if ($ts_selection || $ws_selection);
+  $entry->widgetset_selector($wss_selection) if $wss_selection;
+  $entry->save if ($ts_selection || $ws_selection || $wss_selection );
   return 1;
 }
 
 # EDIT PAGE CALLBACK - Save selected template name to db
 sub cms_post_save_page {
   my ( $cb, $page, $page_orig ) = @_;
-  my ($ts_selection, $ws_selection);
+  my ($ts_selection, $ws_selection, $wss_selection);
   my $app = MT->app;
   return unless $app->isa('MT::App');
   my $q = $app->can('query') ? $app->query : $app->param;
   if ( $app->can('param') ) {
     $ts_selection = $q->param('template_selector');
     $ws_selection = $q->param('widget_selector');
+    $wss_selection = $q->param('widgetset_selector');
   }
   $page->template_selector($ts_selection) if $ts_selection;
   $page->widget_selector($ws_selection) if $ws_selection;
-  $page->save if ($ts_selection || $ws_selection);
+  $page->widgetset_selector($wss_selection) if $wss_selection;
+  $page->save if ($ts_selection || $ws_selection || $wss_selection);
   return 1;
 }
 
@@ -121,6 +156,19 @@ sub _hdlr_widget_selector {
   my $entry = $ctx->stash('entry');
   return '' if !$entry;
   return $entry->widget_selector || $widget_selector_default || '';
+}
+
+# TAG - returns the widget set name
+sub _hdlr_widgetset_selector {
+  my ( $ctx, $args ) = @_;
+  my $blog = $ctx->stash('blog');
+  my $blog_id = $blog->id;
+  my $plugin = MT->component("TemplateSelector");
+  my $widgetset_selector_default = $plugin->get_config_value( 'widgetset_selector_default',
+    'blog:' . $blog_id );
+  my $entry = $ctx->stash('entry');
+  return '' if !$entry;
+  return $entry->widgetset_selector || $widgetset_selector_default || '';
 }
 
 # CUSTOM CONFIG_TYPE - Blog-level template selector menu
@@ -161,6 +209,26 @@ sub _hdlr_ws_menu {
     $options .= '<option value="'.$opt.'"'.($selected ? ' selected' : '').'>'.$opt."</option>\n";
     }
   return '<select name="widget_selector_default" class="ws_menu">' . $options . '</select>' ;
+}
+
+# CUSTOM CONFIG_TYPE - Blog-level widget selector menu
+sub _hdlr_wss_menu {
+  my $app = shift;
+  my ($field_id, $field, $value) = @_;
+  my $blog = $app->blog;
+  my $wss_menu_string = $blog->wss_menu_string;
+  
+  my $plugin = MT->component("TemplateSelector");
+  my $widgetset_selector_default = $plugin->get_config_value( 'widgetset_selector_default',
+    'blog:' . $app->blog->id );
+  my @wss_options = split( /\|/, $wss_menu_string );
+  push @wss_options, '';
+  my $options;
+  foreach my $opt (@wss_options) {
+    my $selected = ($widgetset_selector_default eq $opt);
+    $options .= '<option value="'.$opt.'"'.($selected ? ' selected' : '').'>'.$opt."</option>\n";
+    }
+  return '<select name="widgetset_selector_default" class="wss_menu">' . $options . '</select>' ;
 }
 
 # OPTIONS CALLBACK - template options
@@ -318,6 +386,74 @@ sub ws_options {
       });
   
       $blog->meta('ws_menu_string', $ws_menu_string);
+      $blog->save;
+    }
+  }   
+  return 1;
+}
+
+# OPTIONS CALLBACK - widget set options
+# also creates concatenated widget name list and saves to db
+sub wss_options {
+  my ($cb, $app, $option_hash, $old_value, $new_value) = @_;
+ 
+  unless ($old_value eq $new_value) {
+ 
+    my $blog = $app->blog;
+    my $blog_id = $blog->id;
+    my $scope = "blog:" . $blog_id;
+    my $option = $option_hash->{basename};
+    $app->log({
+      message => "Changing " . $option
+      . " from '" . $old_value 
+      . "' to '" . $new_value . "'."
+    });
+
+    # get the option values
+    my $plugin = MT->component("TemplateSelector");
+    my $ts_trim = ($option eq 'ts_trim') ? $new_value : $plugin->get_config_value( 'ts_trim', $scope );
+    my $wss_name_string = ($option eq 'wss_name') ? $new_value : $plugin->get_config_value( 'wss_name', $scope );
+
+    # untaint the name option
+    {
+      $wss_name_string =~ /^([\w\s\.\-\/%]+)$/;
+      $wss_name_string = $1;
+    }
+
+    # trim leading/trailing whitespace if ts_trim option is set
+    if ($ts_trim) {
+      $wss_name_string = trim_whitespace($wss_name_string);
+    }
+ 
+    $app->log({
+      message => " wss_name_string: '" . $wss_name_string . "'"
+    });
+ 
+    my @maps;
+    if ($wss_name_string) {
+      mt_log($app, 'Name selected');
+      @maps = MT::Template->load({ type => 'widgetset', name => {like => "$wss_name_string" },
+        blog_id => $blog->id, });
+    } elsif (! $wss_name_string) {
+      @maps = MT::Template->load();
+    } else {
+      return 1;
+    }
+
+    # extract the template names.
+    my @names = map {$_->name} @maps;
+    # filter out backup templates.
+    my @names = grep {(! /Backup \d{4}\-\d{2}\-d{2}/)} @names;
+    my $wss_menu_string = join ('|', @names);
+    # retrieve ts_menu_string from db and save if changed
+    my $wss_menu_string_db = $blog->wss_menu_string;
+    unless ($wss_menu_string eq $wss_menu_string_db) {
+      $app->log({
+        message => "Saving ws_menu_string '"
+          . $wss_menu_string . "' to database."
+      });
+  
+      $blog->meta('wss_menu_string', $wss_menu_string);
       $blog->save;
     }
   }   

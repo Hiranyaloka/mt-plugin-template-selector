@@ -1,9 +1,9 @@
 ## TEMPLATE SELECTOR - OVERVIEW ##
-The TemplateSelector plugin allows Authors to choose from templates and widgets to alter the display or function of each individual page or entry.
+The TemplateSelector plugin allows Authors to choose from templates, widgets, and widget sets to alter the display or function of any individual page or entry.
 
-TemplateSelector extends entries and pages with a new `TemplateSelector` custom field and associated tag. First you configure the plugin to automatically display a select list from your blog templates. You can set a default template from that list. Your desired list of templates is made available from within Page/Entry Edit forms. In your Entry or Page templates, the `TemplateSelector` tag will output the name of the selected (or default) template.
+TemplateSelector extends entries and pages with a new `TemplateSelector` custom field and associated tag. First you configure the plugin to automatically display a dropdown list filtered from your blog templates. You can set a default template from that list. Your desired list of templates is made available from within Page/Entry Edit forms. In your Entry or Page templates, the `TemplateSelector` tag will output the name of the selected (or default) template.
 
-The plugin has been extended with an additional custom field and tag, `WidgetSelector`. So now you can also easily display a select list of widgets as a custom field within your Entry and Page edit forms.
+The plugin has been extended with two additional custom fields and associated tags, `WidgetSelector` and `WidgetSetSelector`. So now you can also easily display a select list of widgets and/or widget sets as a custom field within your Entry and Page edit forms.
 
 ### Using the tags in your Entry or Page templates (Designer) ###
 Within entry or page context of a template, use the `TemplateSelector` tag to include a template by name:
@@ -21,6 +21,10 @@ Then (for example) later in that template set a custom stylesheet:
 Similarly, you can use the `WidgetSelector` tag to allow your Authors to choose from a subset of widgets:
 
     <mt:Include widget="<mt:WidgetSelector>">
+
+And perhaps the most flexible of the custom fields, the `WidgetSetSelector` tag:
+
+    <mt:WidgetSet name="<mt:WidgetSetSelector>">
 
 ### Setting The Tag Value (Author) ###
 
@@ -87,13 +91,19 @@ After saving the three menu builder options, the "Set Default Template" menu wil
 ## ENTRY/PAGE TEMPLATE SELECTOR ##
 Template Selector surfaces a dropdown list populated with the templates derived from the plugin options. New entries/pages will be provided the default selection option from the plugin options page.
 
+##  OPTIONAL DISPLAY IN EDIT ENTRY/PAGE FORMS ##
+
+You now have the option to not display any of the three custom fields, via a checkbox in the plugin settings form.
+
 ## INSTALLATION ##
+
 To install this plugin follow the instructions found here:
 
 https://github.com/openmelody/melody/wiki/install-EasyPluginInstallGuide
 
 ## CHANGES ##
 
+- Version 1.3 - Add WidgetSetSelector tag and ability to not display any of the three custom fields.
 - Version 1.2 - Add WidgetSelector tag.
 
 ## DEPENDENCIES ##

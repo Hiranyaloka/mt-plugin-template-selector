@@ -2,10 +2,10 @@ id: 'TemplateSelector'
 key: 'TemplateSelector'
 name: 'Template Selector'
 description: 'Select a template within an Entry or Page.'
-version: 1.2
+version: 1.3
 author_name: 'Rick Bychowski'
 author_link: http://hiranyaloka.com/
-schema_version: 0.96
+schema_version: 0.97
 plugin_link: http://hiranyaloka.com/website_design_encinitas/software/templateselector-plugin-for-melody-and-mt4.html
 
 callbacks:
@@ -14,34 +14,41 @@ callbacks:
   MT::Page::post_save: $TemplateSelector::TemplateSelector::Plugin::cms_post_save_page
   options_change.option.ts_trim: $TemplateSelector::TemplateSelector::Plugin::ts_options
   options_change.option.ts_trim: $TemplateSelector::TemplateSelector::Plugin::ws_options
+  options_change.option.ts_trim: $TemplateSelector::TemplateSelector::Plugin::wss_options
   options_change.option.ts_type: $TemplateSelector::TemplateSelector::Plugin::ts_options
   options_change.option.ts_outfile: $TemplateSelector::TemplateSelector::Plugin::ts_options
   options_change.option.ts_name: $TemplateSelector::TemplateSelector::Plugin::ts_options
   options_change.option.ws_name: $TemplateSelector::TemplateSelector::Plugin::ws_options
+  options_change.option.wss_name: $TemplateSelector::TemplateSelector::Plugin::wss_options
  
 object_types:
   entry:
     template_selector: string meta
     widget_selector: string meta
+    widgetset_selector: string meta
   blog:
     ts_menu_string: string meta
     ws_menu_string: string meta
+    wss_menu_string: string meta
 
 tags:
   function:
     TemplateSelector: $TemplateSelector::TemplateSelector::Plugin::_hdlr_template_selector
     WidgetSelector: $TemplateSelector::TemplateSelector::Plugin::_hdlr_widget_selector
+    WidgetSetSelector: $TemplateSelector::TemplateSelector::Plugin::_hdlr_widgetset_selector
 
 config_types:
   template_selector_menu:
      handler: $TemplateSelector::TemplateSelector::Plugin::_hdlr_ts_menu   
   widget_selector_menu:
      handler: $TemplateSelector::TemplateSelector::Plugin::_hdlr_ws_menu   
+  widgetset_selector_menu:
+     handler: $TemplateSelector::TemplateSelector::Plugin::_hdlr_wss_menu   
 
 options:
   fieldsets:
     template_selector_options:
-      label: 'Template Selector menu builder'
+      label: 'TEMPLATE SELECTOR MENU BUILDER'
       hint: 'Assign terms to create a selectable list of templates.'
       order: 1      
     template_selector_default:
@@ -49,18 +56,34 @@ options:
       hint: 'Set the default template.'
       order: 2      
     widget_selector_options:
-      label: 'Widget Selector menu builder'
+      label: 'WIDGET SELECTOR MENU BUILDER'
       hint: 'Assign a name (wildcards allowed) to create a selectable list of widgets.'
       order: 3      
     widget_selector_default:
       label: 'Widget Selector default value'
       hint: 'Set the default widget.'
       order: 4      
+    widgetset_selector_options:
+      label: 'WIDGET SET SELECTOR MENU BUILDER'
+      hint: 'Assign a name (wildcards allowed) to create a selectable list of widget sets.'
+      order: 5      
+    widgetset_selector_default:
+      label: 'Widget Set Selector default value'
+      hint: 'Set the default widget set.'
+      order: 6      
   ts_trim:
     type: checkbox
     label: 'Trim leading/trailing whitespace?'
     hint: 'Uncheck to preserve leading/trailing whitespace in your outfile and name option terms.'
     default: 1
+    scope: blog
+    order: 1
+  ts_show_menu:
+    type: checkbox
+    label: 'Show the Template Selector dropdown menu in edit entry/page form?'
+    hint: 'Uncheck to remove the Template Selector selection menu from the edit entry/page forms.'
+    default: 1
+    fieldset: template_selector_options
     scope: blog
     order: 1
   ts_type:
@@ -72,7 +95,7 @@ options:
     default: ''
     fieldset: template_selector_options
     scope: blog
-    order: 1
+    order: 2
   ts_outfile:
     type: text
     label: 'Index Template Outfile Name/Path'
@@ -80,7 +103,7 @@ options:
     default: ''
     fieldset: template_selector_options
     scope: blog
-    order: 2
+    order: 3
   ts_name:
     type: text
     label: 'Template Names'
@@ -88,13 +111,21 @@ options:
     default: ''
     fieldset: template_selector_options
     scope: blog
-    order: 3
+    order: 4
   template_selector_default:
     type: template_selector_menu
     label: 'Set Default Template'
     hint: 'Select the default template name which the TemplateSelector tag will output blog-wide.'
     default: ''
     fieldset: template_selector_default
+    scope: blog
+    order: 1
+  ws_show_menu:
+    type: checkbox
+    label: 'Show the Widget Selector dropdown menu in edit entry/page form?'
+    hint: 'Uncheck to remove the Widget Selector selection menu from the edit entry/page forms.'
+    default: 1
+    fieldset: widget_selector_options
     scope: blog
     order: 1
   ws_name:
@@ -104,13 +135,37 @@ options:
     default: ''
     fieldset: widget_selector_options
     scope: blog
-    order: 1
+    order: 2
   widget_selector_default:
     type: widget_selector_menu
     label: 'Set Default Widget'
     hint: 'Select the default widget name which the WidgetSelector tag will output blog-wide.'
     default: ''
     fieldset: widget_selector_default
+    scope: blog
+    order: 1
+  wss_show_menu:
+    type: checkbox
+    label: 'Show the Widget Set Selector dropdown menu in edit entry/page form?'
+    hint: 'Uncheck to remove the Widget Set Selector selection menu from the edit entry/page forms.'
+    default: 1
+    fieldset: widgetset_selector_options
+    scope: blog
+    order: 1
+  wss_name:
+    type: text
+    label: 'Widget Set Names'
+    hint: 'A widget set name (supports multiple "%" and single "_" character  wildcards).'
+    default: ''
+    fieldset: widgetset_selector_options
+    scope: blog
+    order: 2
+  widgetset_selector_default:
+    type: widgetset_selector_menu
+    label: 'Set Default Widget Set'
+    hint: 'Select the default widget set name which the WidgetSetSelector tag will output blog-wide.'
+    default: ''
+    fieldset: widgetset_selector_default
     scope: blog
     order: 1
 
