@@ -74,24 +74,9 @@ sub cms_post_save_entry {
     $ts_selection = $q->param('template_selector');
     $ws_selection = $q->param('widget_selector');
   }
-  if ($ts_selection) {
-    $entry->template_selector($ts_selection);
-    $entry->save;
-
-    $app->log({
-      message => "Entry #" . $entry_id . " selected template '"
-      . $ts_selection . "'."
-    });
-  }
-  if ($ws_selection) {
-    $entry->widget_selector($ws_selection);
-    $entry->save;
-
-    $app->log({
-      message => "Entry #" . $entry_id . " selected widget '"
-      . $ws_selection . "'."
-    });
-  }
+  $entry->template_selector($ts_selection) if $ts_selection;
+  $entry->widget_selector($ws_selection) if $ws_selection;
+  $entry->save if ($ts_selection || $ws_selection);
   return 1;
 }
 
@@ -106,10 +91,9 @@ sub cms_post_save_page {
     $ts_selection = $q->param('template_selector');
     $ws_selection = $q->param('widget_selector');
   }
-  if ($ws_selection) {
-    $page->widget_selector($ws_selection);
-    $page->save;
-  }
+  $page->template_selector($ts_selection) if $ts_selection;
+  $page->widget_selector($ws_selection) if $ws_selection;
+  $page->save if ($ts_selection || $ws_selection);
   return 1;
 }
 
