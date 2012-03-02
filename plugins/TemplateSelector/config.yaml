@@ -1,15 +1,17 @@
 id: 'TemplateSelector'
 key: 'TemplateSelector'
 name: 'Template Selector'
-description: 'Select a template within an Entry or Page.'
-version: 1.3
+description: 'Select a template within an Entry or Page. (Requires the ConfigAssistant plugin).'
+version: 1.4
 author_name: 'Rick Bychowski'
 author_link: http://hiranyaloka.com/
 schema_version: 0.97
 plugin_link: http://hiranyaloka.com/website_design_encinitas/software/templateselector-plugin-for-melody-and-mt4.html
 
 callbacks:
-  MT::App::CMS::template_param.edit_entry: $TemplateSelector::TemplateSelector::Plugin::edit_entry_param
+  MT::App::CMS::template_param.edit_entry:
+    handler: $TemplateSelector::TemplateSelector::Plugin::edit_entry_param
+    priority: 10
   MT::Entry::post_save: $TemplateSelector::TemplateSelector::Plugin::cms_post_save_entry
   MT::Page::post_save: $TemplateSelector::TemplateSelector::Plugin::cms_post_save_page
   options_change.option.ts_trim: $TemplateSelector::TemplateSelector::Plugin::ts_options
