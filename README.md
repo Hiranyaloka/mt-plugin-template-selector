@@ -1,4 +1,4 @@
-## TEMPLATE SELECTOR - OVERVIEW ##
+## TEMPLATE SELECTOR Version 1.4 - OVERVIEW ##
 The TemplateSelector plugin allows Authors to choose from templates, widgets, and widget sets to alter the display or function of any individual page or entry.
 
 TemplateSelector extends entries and pages with a new `TemplateSelector` custom field and associated tag. First you configure the plugin to automatically display a dropdown list filtered from your blog templates. You can set a default template from that list. Your desired list of templates is made available from within Page/Entry Edit forms. In your Entry or Page templates, the `TemplateSelector` tag will output the name of the selected (or default) template.
@@ -105,6 +105,7 @@ https://github.com/openmelody/melody/wiki/install-EasyPluginInstallGuide
 
 ## CHANGES ##
 
+- Version 1.4 - TemplateSelector no longer breaks the Custom Fields plugin.
 - Version 1.3 - Add WidgetSetSelector tag and ability to not display any of the three custom fields.
 - Version 1.2 - Add WidgetSelector tag.
 
