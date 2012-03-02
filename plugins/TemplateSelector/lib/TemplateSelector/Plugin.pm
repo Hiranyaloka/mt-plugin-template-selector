@@ -12,12 +12,17 @@ use strict;
 sub edit_entry_param {
   my ($cb, $app, $param, $tmpl) = @_;
   my $blog = $app->blog;
+  my $blog_id = $blog->id;
   my ($entry, $template_selector, $widget_selector, $widgetset_selector);
   # retrieve if previous template/widget selector values
   if ($param->{id}) {
     my $type = $param->{object_type};
     my $class = $app->model($type);
-    $entry = $class->load($param->{id});
+    if (!$class) {
+	    MT->log({ blog_id => $blog->id, message => "Invalid type " . $type });
+	    return 1; # fail gracefully
+    }
+    $entry = $class->load($param->{id})  or return 1;
     $template_selector = $entry->template_selector || '';
     $widget_selector = $entry->widget_selector || '';
      $widgetset_selector = $entry->widgetset_selector || '';
@@ -26,17 +31,17 @@ sub edit_entry_param {
   my $blog_id = $blog->id;
   my $plugin = MT->component("TemplateSelector");
   my $ts_show_menu = $plugin->get_config_value( 'ts_show_menu',
-    'blog:' . $app->blog->id );
+    'blog:' . $blog_id );
   my $ws_show_menu = $plugin->get_config_value( 'ws_show_menu',
-    'blog:' . $app->blog->id );
+    'blog:' . $blog_id );
   my $wss_show_menu = $plugin->get_config_value( 'wss_show_menu',
-    'blog:' . $app->blog->id );
+    'blog:' . $blog_id );
   $template_selector = $template_selector || $plugin->get_config_value( 'template_selector_default',
-    'blog:' . $app->blog->id );
+    'blog:' . $blog_id );
   $widget_selector = $widget_selector || $plugin->get_config_value( 'widget_selector_default',
-    'blog:' . $app->blog->id );
+    'blog:' . $blog_id );
   $widgetset_selector = $widgetset_selector || $plugin->get_config_value( 'widgetset_selector_default',
-    'blog:' . $app->blog->id );
+    'blog:' . $blog_id );
   # retrieve stored template selector menu
   my ($ts_menu_string, $ws_menu_string, $wss_menu_string);
   $ts_menu_string = $blog->ts_menu_string;  
@@ -92,12 +97,10 @@ sub cms_post_save_entry {
   my $entry_id = $entry->id;
   my $app = MT->app;
   return unless $app->isa('MT::App');
-  my $q = $app->can('query') ? $app->query : $app->param;
-  if ( $app->can('param') ) {
-    $ts_selection = $q->param('template_selector');
-    $ws_selection = $q->param('widget_selector');
-    $wss_selection = $q->param('widgetset_selector');
-  }
+  $ts_selection = $app->param('template_selector') || '';
+  $ws_selection = $app->param('widget_selector') || '';
+  $wss_selection = $app->param('widgetset_selector') || '';
+
   $entry->template_selector($ts_selection) if $ts_selection;
   $entry->widget_selector($ws_selection) if $ws_selection;
   $entry->widgetset_selector($wss_selection) if $wss_selection;
@@ -111,12 +114,10 @@ sub cms_post_save_page {
   my ($ts_selection, $ws_selection, $wss_selection);
   my $app = MT->app;
   return unless $app->isa('MT::App');
-  my $q = $app->can('query') ? $app->query : $app->param;
-  if ( $app->can('param') ) {
-    $ts_selection = $q->param('template_selector');
-    $ws_selection = $q->param('widget_selector');
-    $wss_selection = $q->param('widgetset_selector');
-  }
+  $ts_selection = $app->param('template_selector') || '';
+  $ws_selection = $app->param('widget_selector') || '';
+  $wss_selection = $app->param('widgetset_selector') || '';
+
   $page->template_selector($ts_selection) if $ts_selection;
   $page->widget_selector($ws_selection) if $ws_selection;
   $page->widgetset_selector($wss_selection) if $wss_selection;
@@ -462,10 +463,12 @@ sub mt_log {
 }
 
 sub trim_whitespace {
-my $string = shift;
-	$string =~ s/^\s+//;
-	$string =~ s/\s+$//;
-	return $string;
+  my $string = shift;
+  if ($string) {
+    $string =~ s/^\s+//;
+    $string =~ s/\s+$//;
+  }
+  return $string || '';
 }
 
 1;
